@@ -54,7 +54,7 @@ int main() {
 
         player.move(0.1 * (KeysDown["D"] - KeysDown["A"]), 0.1 * (KeysDown["S"] - KeysDown["W"]));
         if (KeysDown["Sp"]) {
-            player.shoot(AllyBullets);
+            player.shoot(AllyBullets, BULLET_DAMAGE);
         }
 
         for (auto& bul : AllyBullets) {
