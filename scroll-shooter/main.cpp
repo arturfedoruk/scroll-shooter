@@ -1,22 +1,39 @@
-#include <SFML/Graphics.hpp>
-#include <iostream>
+#include "config.h"
 #include "Bullet.h"
 #include "AllyShip.h"
-#include "config.h"
+#include "EnemyShip.h"
+
 
 map<string, int> KeysDown{
     pair<string, int>{"W", 0}, pair<string, int>{"A", 0}, pair<string, int>{"S", 0}, pair<string, int>{"D", 0}, pair<string, int>{"Sp", 0}
 };
 
-vector<Bullet> AllyBullets;
+vector<Bullet> AllyBulletGroup;
+vector<Bullet> EnemyBulletGroup;
+vector<EnemyShip> EnemyShipGroup;
+
+int spawn_timer = 0;
+int enemies_counter = 0;
+int score = 0;
 
 int main() {
 
-    sf::RenderWindow window(sf::VideoMode(MAX_X, MAX_Y), "scroll-shooter");
-    sf::Texture ally_ship_img;
-    ally_ship_img.loadFromFile("ally_ship.png");
+    srand(time(NULL));
+    RenderWindow window(sf::VideoMode(MAX_X, MAX_Y), "scroll-shooter");
+    Texture ally_ship_img;
+    ally_ship_img.loadFromFile("images/ally_ship.png");
+    Texture enemy_ship_img;
+    enemy_ship_img.loadFromFile("images/enemy_ship.png");
+        
     AllyShip player(ally_ship_img);
-    player.setPosition(sf::Vector2f(MAX_X / 2, MAX_Y * 3 / 4));
+
+    Font font;
+    font.loadFromFile("arial.ttf");
+    Text bar;
+    bar.setFont(font);
+    bar.setString("Lives: " + to_string(player.lives) + ", Score: " + to_string(score));
+    bar.setCharacterSize(24);
+    bar.setColor(Color::Yellow);
 
     while (window.isOpen())
     {
@@ -52,22 +69,51 @@ int main() {
                 KeysDown["Sp"] = 0;
         }
 
-        player.move(0.1 * (KeysDown["D"] - KeysDown["A"]), 0.1 * (KeysDown["S"] - KeysDown["W"]));
-        if (KeysDown["Sp"]) {
-            player.shoot(AllyBullets, BULLET_DAMAGE);
+        player.move(PLAYER_SPEED * (KeysDown["D"] - KeysDown["A"]), PLAYER_SPEED * (KeysDown["S"] - KeysDown["W"]));
+        player.update(EnemyBulletGroup);
+        bar.setString("Lives: " + to_string(player.lives) + ", Score: " + to_string(score));
+        if (player.lives <= 0) {
+            window.close();
         }
 
-        for (auto& bul : AllyBullets) {
-            bul.move(0, -1);
-            bul.update_state();
+        if (KeysDown["Sp"]) {
+            player.shoot(AllyBulletGroup, BULLET_DAMAGE);
+        }
+
+        for (auto& enem : EnemyShipGroup) {
+            enem.update(AllyBulletGroup);
+        }
+        for (auto& bul : AllyBulletGroup) {
+            bul.update();
+        }
+        for (auto& bul : EnemyBulletGroup) {
+            bul.update();
+        }
+
+        spawn_timer++;
+        if (spawn_timer == SPAWN_TIME && enemies_counter < 3) {
+            EnemyShip(enemy_ship_img, &score, &enemies_counter, &EnemyShipGroup);
+            enemies_counter++;
+            spawn_timer = 0;
+        }
+
+        for (auto& enem : EnemyShipGroup) {
+            enem.shoot(EnemyBulletGroup, BULLET_DAMAGE);
         }
 
         window.clear();
 
         window.draw(player);
-        for (auto& bul : AllyBullets) {
+        for (auto& enem : EnemyShipGroup) {
+            window.draw(enem);
+        }
+        for (auto& bul : AllyBulletGroup) {
             window.draw(bul);
         }
+        for (auto& bul : EnemyBulletGroup) {
+            window.draw(bul);
+        }
+        window.draw(bar);
 
         window.display();
     }

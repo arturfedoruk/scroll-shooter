@@ -1,12 +1,18 @@
 #include "Bullet.h"
 
-Bullet::Bullet(Vector2f position, vector<Bullet>* g, int vy, int damage)
+Bullet::Bullet(Vector2f position, vector<Bullet>* g, float vy, int damage, Color color)
     : CircleShape(5), group(g), vy(vy), damage(damage){
-    setPosition(position); group->push_back(*this); setFillColor(sf::Color(100, 250, 50));
+    setPosition(position); setFillColor(color); 
+    group->push_back(*this);
 }
 
-void Bullet::update_state() {
-    if (getPosition().y < 0) {
+void Bullet::move() {
+    setPosition(getPosition().x, getPosition().y + vy);
+}
+
+void Bullet::update() {
+    move();
+    if (getPosition().y < 0 || getPosition().y > 1.2 * MAX_Y) {
         group->erase(group->begin());
     }
 }
