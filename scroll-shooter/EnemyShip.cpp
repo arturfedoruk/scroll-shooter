@@ -1,8 +1,8 @@
 #include "EnemyShip.h"
 
 
-EnemyShip::EnemyShip(Texture& t, int* sc_counter, int* en_counter, vector<EnemyShip>* group)
-    : Sprite(t), score_counter(sc_counter), enemies_counter(en_counter), group(group) {
+EnemyShip::EnemyShip(Texture& t, int* sc_counter, vector<int>* en_slots, int idx, vector<EnemyShip>* group)
+    : Sprite(t), score_counter(sc_counter), enemies_slots(en_slots), index(idx), group(group) {
 	setPosition(BORDER_X + rand() % (MAX_X - 2 * BORDER_X + 1),
                 BORDER_Y + rand() % (MAX_Y/2 - BORDER_X + 1));
 	setOrigin(Vector2f(30, 20));
@@ -36,8 +36,13 @@ void EnemyShip::update(vector<Bullet> g) {
         hit(bul);
     }
     if (lives <= 0) {
-        (*enemies_counter)--; 
+        for (int i = 0; i < MAX_ENEMIES; i++) {
+            if (index == (*group)[i].index) {
+                group->erase(group->begin() + i);
+                (*enemies_slots)[index] = 0;
+                break;
+            }
+        }
         (*score_counter)++;
-        group->erase(group->begin());
     }
 }

@@ -13,8 +13,8 @@ vector<Bullet> EnemyBulletGroup;
 vector<EnemyShip> EnemyShipGroup;
 
 int spawn_timer = 0;
-int enemies_counter = 0;
 int score = 0;
+vector<int> enemies_slots;
 
 int main() {
 
@@ -26,6 +26,9 @@ int main() {
     enemy_ship_img.loadFromFile("images/enemy_ship.png");
         
     AllyShip player(ally_ship_img);
+    for (int i = 0; i < MAX_ENEMIES; i++) {
+        enemies_slots.push_back(0);
+    }
 
     Font font;
     font.loadFromFile("arial.ttf");
@@ -91,10 +94,15 @@ int main() {
         }
 
         spawn_timer++;
-        if (spawn_timer == SPAWN_TIME && enemies_counter < 3) {
-            EnemyShip(enemy_ship_img, &score, &enemies_counter, &EnemyShipGroup);
-            enemies_counter++;
-            spawn_timer = 0;
+        if (spawn_timer == SPAWN_TIME) {
+            for (int i = 0; i < MAX_ENEMIES; i++) {
+                if (!enemies_slots[i]) {
+                    EnemyShip(enemy_ship_img, &score, &enemies_slots, i, &EnemyShipGroup);
+                    enemies_slots[i] = 1;
+                    spawn_timer = 0;
+                    break;
+                }
+            }
         }
 
         for (auto& enem : EnemyShipGroup) {

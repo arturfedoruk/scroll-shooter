@@ -18,11 +18,12 @@ using namespace std;
 #define ENEMY_LIVES 2
 
 #define PLAYER_INTENSITY 1000
-#define INTENSITY 4000
+#define INTENSITY 1000
 
 #define BULLET_DAMAGE 1
 #define BULLET_SPEED 0.3
 
-#define SPAWN_TIME 5000
+#define SPAWN_TIME 4000
+#define MAX_ENEMIES 5
 
 
