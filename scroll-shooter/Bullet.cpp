@@ -10,7 +10,7 @@ Bullet::Bullet(Vector2f position, vector<Bullet>* group, vector<int>* slts, floa
             index = i;
             break;
         }
-    }
+    }//занимает свободный индекс
 }
 
 void Bullet::move() {
@@ -28,6 +28,7 @@ void Bullet::destroy() {
 }
 
 void Bullet::update() {
+    //обновление состояния
     move();
     if (getPosition().y < 0 || getPosition().y > 1.2 * MAX_Y) {
         destroy();
@@ -35,6 +36,7 @@ void Bullet::update() {
 }
 
 void update(vector<Bullet>& group) {
+    // штоб по многу раз не переписывать
     for (auto& bul : group) {
         bul.update();
     }

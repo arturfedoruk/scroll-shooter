@@ -12,7 +12,7 @@ public:
     void hit(Bullet bullet);
     void update(vector<Bullet> group);
 private:
-    int shootingTimer = 0;
+    int shootingTimer = 0; // עאילונ סענוכüבû
     int hitbox_x = 56;
     int hitbox_y = 16;
 

@@ -10,16 +10,40 @@ public:
     void hit(Bullet bullet);
     void move();
     void update(vector<Bullet>& group);
+    int* score_counter; // ссылка на счетчик счета игрока
+    int vx = 0, vy = 0; // скорость вдоль Х и У
 private:
-    vector<EnemyShip>* group;
-    int* score_counter;
-    vector<int>* enemies_slots;
-    int index;
-    int shootingTimer = 0;
+    vector<EnemyShip>* group; // вектор противников
+    vector<int>* enemies_slots; // вектор занятости индексов
+    int index; // индекс каждого вражеского корабля
+    int shootingTimer = 0; // таймер перед выстрелом
     int hitbox_x = 100;
-    int hitbox_y = 20;
-    int vx=0, vy=0;
-
+    int hitbox_y = 20; // хитбокс
+    // каждому вражескому кораблю присваивается индекс, чтобы его можно было легко удалить из массива врагов
+    // для этого же храним вектор, показывающий, заняты ли соответствующие индексы
 };
+
+
+
+class LineEnemy : public EnemyShip {
+public:
+    LineEnemy(Texture& t, int* sc_counter, vector<int>* en_slots, int idx, vector<EnemyShip>* group, int r);
+    void update(vector<Bullet>& g);
+private:
+    int r;
+    int x0, y0;
+};
+
+class CircleEnemy : public EnemyShip {
+public:
+    CircleEnemy(Texture& t, int* sc_counter, vector<int>* en_slots, int idx, vector<EnemyShip>* group, int r);
+    void update(vector<Bullet>& g);
+private:
+    int r;
+    int x0, y0;
+    float phi;
+};
+
+// LineEnemy и CircleEnemy почему-то не работают....
 
 void update(vector<EnemyShip>& group, vector<Bullet>& bullet_group);

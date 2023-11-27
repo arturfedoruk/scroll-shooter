@@ -4,7 +4,7 @@ AllyShip::AllyShip(Texture& t) : Sprite(t) { setPosition(Vector2f(MAX_X / 2, MAX
                                              setOrigin(Vector2f(30, 20)); }
 
 void AllyShip::shoot(vector<Bullet>& group, vector<int>& slots, int damage) {
-    shootingTimer++;
+    shootingTimer++; // таймер пальбы
     if (shootingTimer == PLAYER_INTENSITY) {
         Bullet(getPosition(), &group, &slots, -BULLET_SPEED, 0, damage, Color::Green);
         shootingTimer = 0;
@@ -25,9 +25,11 @@ void AllyShip::move(const Vector2f& offset) {
     if (getPosition().y < MAX_Y / 2) {
         setPosition(getPosition().x, MAX_Y / 2);
     }
+    // проверка, чтобы не улететь за экран
 }
 
 void AllyShip::move(float offsetX, float offsetY) {
+    // аж две функции прописал, какой я молодец
     setPosition(getPosition().x + offsetX, getPosition().y + offsetY);
     if (getPosition().x > MAX_X - BORDER_X) {
         setPosition(MAX_X - BORDER_X, getPosition().y);
@@ -44,6 +46,7 @@ void AllyShip::move(float offsetX, float offsetY) {
 }
 
 void AllyShip::hit(Bullet bullet) {
+    // проверка столкновения с пулькой
     auto x = bullet.getPosition().x, y = bullet.getPosition().y,
         x1 = getPosition().x - hitbox_x / 2, x2 = getPosition().x + hitbox_x / 2,
         y1 = getPosition().y - hitbox_x / 2, y2 = getPosition().y + hitbox_x / 2;
@@ -54,6 +57,7 @@ void AllyShip::hit(Bullet bullet) {
 }
 
 void AllyShip::update(vector<Bullet> group) {
+    // обновление состояния
     for (auto& bul : group) {
         hit(bul);
     }
@@ -62,6 +66,7 @@ void AllyShip::update(vector<Bullet> group) {
 Background::Background(Texture& t) : Sprite(t) { setPosition(0, -2400); }
 
 void Background::update(){
+    // прокручивает зацикленный фон
     setPosition(0, getPosition().y + BACKGROUND_SPEED);
     if (getPosition().y >= 0) {
         setPosition(0, -2400);
