@@ -18,14 +18,19 @@ vector<int> enemies_slots;
 vector<int> bullets_slots;
 
 int main() {
-
     srand(time(NULL));
+
     RenderWindow window(sf::VideoMode(MAX_X, MAX_Y), "scroll-shooter");
+    window.setVerticalSyncEnabled(true);
+
     Texture ally_ship_img;
     ally_ship_img.loadFromFile("images/ally_ship.png");
     Texture enemy_ship_img;
     enemy_ship_img.loadFromFile("images/enemy_ship.png");
-        
+    Texture background_img;
+    background_img.loadFromFile("images/back.png");
+    
+    Background background(background_img);
     AllyShip player(ally_ship_img);
 
     for (int i = 0; i < MAX_ENEMIES; i++) {
@@ -84,6 +89,7 @@ int main() {
         if (player.lives <= 0) {
             window.close();
         }
+        background.update();
 
         if (KeysDown["Sp"]) {
             player.shoot(AllyBulletGroup, bullets_slots, BULLET_DAMAGE);
@@ -110,6 +116,7 @@ int main() {
 
         window.clear();
 
+        window.draw(background);
         window.draw(player);
         for (auto& enem : EnemyShipGroup) {
             window.draw(enem);

@@ -62,7 +62,7 @@ void AllyShip::update(vector<Bullet> group) {
 Background::Background(Texture& t) : Sprite(t) { setPosition(0, -2400); }
 
 void Background::update(){
-    move(0, BACKGROUND_SPEED);
+    setPosition(0, getPosition().y + BACKGROUND_SPEED);
     if (getPosition().y >= 0) {
         setPosition(0, -2400);
     }
