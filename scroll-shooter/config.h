@@ -10,11 +10,11 @@ using namespace std;
 #define MAX_Y 720
 #define BORDER_X 36
 #define BORDER_Y 36
+#define BACKGROUND_SPEED 2
 
 #define PLAYER_SPEED 0.15
-#define SAVE_TIME 5000
 
-#define ALLY_LIVES 5
+#define ALLY_LIVES 100
 #define ENEMY_LIVES 2
 
 #define PLAYER_INTENSITY 1000

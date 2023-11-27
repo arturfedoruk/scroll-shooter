@@ -1,16 +1,15 @@
 #pragma once
 #include "Bullet.h"
 
-int Rannum(int min, int max);
-
 class EnemyShip : public Sprite {
 public:
     EnemyShip(Texture& t, int* sc_counter, vector<int>* en_slots, int idx, vector<EnemyShip>* group);
-    void shoot(vector<Bullet>& group, int damage);
+    void shoot(vector<Bullet>& group, vector<int>& slots, int damage);
     int lives = ENEMY_LIVES;
+    void destroy();
     void hit(Bullet bullet);
     void move();
-    void update(vector<Bullet> group);
+    void update(vector<Bullet>& group);
 private:
     vector<EnemyShip>* group;
     int* score_counter;
@@ -22,3 +21,5 @@ private:
     int vx=0, vy=0;
 
 };
+
+void update(vector<EnemyShip>& group, vector<Bullet>& bullet_group);
