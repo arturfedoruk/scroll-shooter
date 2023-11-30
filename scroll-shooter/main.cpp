@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "AllyShip.h"
 #include "EnemyShip.h"
+#include "Asteroid.h"
 
 map<string, int> KeysDown{
     pair<string, int>{"W", 0}, pair<string, int>{"A", 0}, pair<string, int>{"S", 0}, pair<string, int>{"D", 0}, pair<string, int>{"Sp", 0}
@@ -10,12 +11,15 @@ map<string, int> KeysDown{
 vector<Bullet> AllyBulletGroup;
 vector<Bullet> EnemyBulletGroup;
 vector<EnemyShip> EnemyShipGroup;
+vector<Asteroid> AsteroidGroup;
 // группы союзных, вражеских пуль и вражеских кораблей
 
 int spawn_timer = 0; // таймер спавна врагов
+int aster_sp_timer = 0;
 int score = 0; // счетчик сщета
 vector<int> enemies_slots;
-vector<int> bullets_slots; // массивы занятости индексов
+vector<int> bullets_slots;
+vector<int> asteroid_slots;// массивы занятости индексов
 
 int main() {
     srand(time(NULL)); // генерация рандома
@@ -44,6 +48,9 @@ int main() {
     }
     for (int i = 0; i < 200; i++) {
         bullets_slots.push_back(0);
+    }
+    for (int i = 0; i < 200; i++) {
+        asteroid_slots.push_back(0);
     }
     // заполняем массивы индексов
 
@@ -93,7 +100,7 @@ int main() {
 
         player.move(PLAYER_SPEED * (KeysDown["D"] - KeysDown["A"]), PLAYER_SPEED * (KeysDown["S"] - KeysDown["W"]));
         // на основе ввода пользователя перемещаем игрока
-
+        player.update2(AsteroidGroup);
         player.update(EnemyBulletGroup);
         bar.setString("Lives: " + to_string(player.lives) + "\nScore: " + to_string(score));
         if (player.lives <= 0) {
@@ -107,6 +114,7 @@ int main() {
         } // если пробел, то стреляем
 
         update(EnemyShipGroup, AllyBulletGroup);
+        update(AsteroidGroup);
         update(AllyBulletGroup); update(EnemyBulletGroup);
         // обносление состояния пулек и врагов
 
@@ -128,11 +136,30 @@ int main() {
 
                     EnemyShip(enemy_ship_img, &score, &enemies_slots, i, &EnemyShipGroup);
                     enemies_slots[i] = 1;
+               
+
                     break; // занимаем свободный индекс
                 }
             }
             spawn_timer = 0;
         }// спавн противников
+        aster_sp_timer++;
+        if (aster_sp_timer == SPAWN_TIME*3) {
+            for (int i = 0; i < 4; i++) {
+                if (!asteroid_slots[i]) {
+
+                 
+
+                    Vector2f pos(BORDER_X + rand() % (MAX_X - 2 * BORDER_X + 1),0);
+                    Asteroid(pos, &AsteroidGroup, &asteroid_slots, ASTERSPEED, 0, 200, Color::Yellow);
+
+
+
+                    break; // занимаем свободный индекс
+                }
+            }
+            aster_sp_timer = 0;
+        }// спавн астероидов
 
         for (auto& enem : EnemyShipGroup) {
             enem.shoot(EnemyBulletGroup, bullets_slots, BULLET_DAMAGE);
@@ -144,6 +171,9 @@ int main() {
         window.draw(player);
         for (auto& enem : EnemyShipGroup) {
             window.draw(enem);
+        }
+        for (auto& bul : AsteroidGroup) {
+            window.draw(bul);
         }
         for (auto& bul : AllyBulletGroup) {
             window.draw(bul);

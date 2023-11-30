@@ -10,6 +10,10 @@ EnemyShip::EnemyShip(Texture& t, int* sc_counter, vector<int>* en_slots, int idx
     
 }
 
+
+
+
+
 void EnemyShip::shoot(vector<Bullet>& group, vector<int>& slots, int damage) {
     shootingTimer++; // עאילונ ןאכüבû
     if (shootingTimer == INTENSITY) {

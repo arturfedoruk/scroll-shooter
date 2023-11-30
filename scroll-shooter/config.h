@@ -24,6 +24,7 @@ using namespace std;
 
 #define BULLET_DAMAGE 1
 #define BULLET_SPEED 20
+#define ASTERSPEED 7
 
 #define SPAWN_TIME 120 // число тиков между спавна следующего противника
 #define MAX_ENEMIES 5

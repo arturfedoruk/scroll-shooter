@@ -1,6 +1,7 @@
 #pragma once
 #include "Bullet.h"
 #include "config.h"
+#include "Asteroid.h"
 
 class AllyShip : public Sprite {
 public:
@@ -10,7 +11,9 @@ public:
     void move(float	offsetX, float offsetY);
     int lives = ALLY_LIVES;
     void hit(Bullet bullet);
+    void hit2(Asteroid bullet);
     void update(vector<Bullet> group);
+    void update2(vector<Asteroid> group);
 private:
     int shootingTimer = 0; // עאילונ סענוכüבû
     int hitbox_x = 56;
