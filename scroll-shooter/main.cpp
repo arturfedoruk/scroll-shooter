@@ -29,6 +29,8 @@ int main() {
 
     Texture ally_ship_img;
     ally_ship_img.loadFromFile("images/ally_ship.png");
+    Texture asteroid_img;
+    asteroid_img.loadFromFile("images/asteroid.png");
     Texture enemy_ship_img;
     enemy_ship_img.loadFromFile("images/enemy_ship.png");
     Texture line_enemy_img;
@@ -38,7 +40,8 @@ int main() {
     Texture background_img;
     background_img.loadFromFile("images/back.png");
     //текстурочьки
-    
+    sf::Sprite asteroid;
+    asteroid.setTexture(asteroid_img);
     Background background(background_img);
     AllyShip player(ally_ship_img);
     // фон и игрок
@@ -144,17 +147,12 @@ int main() {
             spawn_timer = 0;
         }// спавн противников
         aster_sp_timer++;
-        if (aster_sp_timer == SPAWN_TIME*3) {
+        if (aster_sp_timer == SPAWN_TIME*1.5) {
             for (int i = 0; i < 4; i++) {
                 if (!asteroid_slots[i]) {
 
-                 
-
                     Vector2f pos(BORDER_X + rand() % (MAX_X - 2 * BORDER_X + 1),0);
                     Asteroid(pos, &AsteroidGroup, &asteroid_slots, ASTERSPEED, 0, 200, Color::Yellow);
-
-
-
                     break; // занимаем свободный индекс
                 }
             }
@@ -173,10 +171,12 @@ int main() {
             window.draw(enem);
         }
         for (auto& bul : AsteroidGroup) {
-            window.draw(bul);
+            asteroid.setPosition(bul.getPosition());
+            window.draw(asteroid);
         }
         for (auto& bul : AllyBulletGroup) {
             window.draw(bul);
+
         }
         for (auto& bul : EnemyBulletGroup) {
             window.draw(bul);
