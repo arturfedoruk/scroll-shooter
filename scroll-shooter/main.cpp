@@ -116,7 +116,7 @@ int main() {
             player.shoot(AllyBulletGroup, bullets_slots, BULLET_DAMAGE);
         } // если пробел, то стреляем
 
-        update(EnemyShipGroup, AllyBulletGroup);
+        update(EnemyShipGroup, AllyBulletGroup, bullets_slots);
         update(AsteroidGroup);
         update(AllyBulletGroup); update(EnemyBulletGroup);
         // обносление состояния пулек и врагов

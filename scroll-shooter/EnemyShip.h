@@ -6,10 +6,10 @@ public:
     EnemyShip(Texture& t, int* sc_counter, vector<int>* en_slots, int idx, vector<EnemyShip>* group);
     void shoot(vector<Bullet>& group, vector<int>& slots, int damage);
     int lives = ENEMY_LIVES;
-    void destroy();
+    void destroy(vector<Bullet>& g, vector<int>& slots);
     void hit(Bullet bullet);
     void move();
-    void update(vector<Bullet>& group);
+    void update(vector<Bullet>& group, vector<int>& slots);
     int* score_counter; // ссылка на счетчик счета игрока
     int vx = 0, vy = 0; // скорость вдоль Х и У
 private:
@@ -46,4 +46,4 @@ private:
 
 // LineEnemy и CircleEnemy почему-то не работают....
 
-void update(vector<EnemyShip>& group, vector<Bullet>& bullet_group);
+void update(vector<EnemyShip>& group, vector<Bullet>& bullet_group, vector<int>& slots);

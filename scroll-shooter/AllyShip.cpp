@@ -6,7 +6,7 @@ AllyShip::AllyShip(Texture& t) : Sprite(t) { setPosition(Vector2f(MAX_X / 2, MAX
 void AllyShip::shoot(vector<Bullet>& group, vector<int>& slots, int damage) {
     shootingTimer++; // таймер пальбы
     if (shootingTimer == PLAYER_INTENSITY) {
-        Bullet(getPosition(), &group, &slots, -BULLET_SPEED, 0, damage, Color::Green);
+        Bullet(getPosition(), &group, &slots, -BULLET_SPEED, 0, damage, Color::Green, "ubivec");
         shootingTimer = 0;
     }
 }
@@ -50,8 +50,13 @@ void AllyShip::hit(Bullet bullet) {
     auto x = bullet.getPosition().x, y = bullet.getPosition().y,
         x1 = getPosition().x - hitbox_x / 2, x2 = getPosition().x + hitbox_x / 2,
         y1 = getPosition().y - hitbox_x / 2, y2 = getPosition().y + hitbox_x / 2;
-    if (x1 <= x && x <= x2 && y1 <= y && y <= y2) {
-        lives -= bullet.damage;
+    if (x1 <= x && x <= x2 && y1 <= y && y <= y2 && bullet.type == "ubivec") {
+        //lives -= bullet.damage;
+        bullet.destroy();
+    } 
+    if (x1 <= x && x <= x2 && y1 <= y && y <= y2 && bullet.type == "hitler") {
+        lives += 2;
+        std::cout << "hit";
         bullet.destroy();
     }
 }
@@ -66,8 +71,8 @@ void AllyShip::update(vector<Bullet> group) {
 void AllyShip::hit2(Asteroid bullet) {
     // проверка столкновения с пулькой
     auto x = bullet.getPosition().x, y = bullet.getPosition().y,
-        x1 = getPosition().x - hitbox_x / 2, x2 = getPosition().x + hitbox_x / 2,
-        y1 = getPosition().y - hitbox_x / 2, y2 = getPosition().y + hitbox_x / 2;
+        x1 = getPosition().x - hitbox_x, x2 = getPosition().x + hitbox_x,
+        y1 = getPosition().y - hitbox_x, y2 = getPosition().y + hitbox_x;
     if (x1 <= x && x <= x2 && y1 <= y && y <= y2) {
         lives -= bullet.damage;
         bullet.destroy();
