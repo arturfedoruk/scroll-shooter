@@ -9,7 +9,7 @@ public:
     void destroy(vector<Bullet>& g, vector<int>& slots);
     void hit(Bullet bullet);
     void move();
-    void update(vector<Bullet>& group, vector<int>& slots);
+    void update(vector<Bullet>& enemy_bullet_group, vector<Bullet>& ally_bullet_group, vector<int>& slots);
     int* score_counter; // ссылка на счетчик счета игрока
     int vx = 0, vy = 0; // скорость вдоль ’ и ”
 private:
@@ -23,12 +23,12 @@ private:
     // дл€ этого же храним вектор, показывающий, зан€ты ли соответствующие индексы
 };
 
-
+void update(vector<EnemyShip>& group, vector<Bullet>& enemy_bullet_group, vector<Bullet>& ally_bullet_group, vector<int>& slots);
 
 class LineEnemy : public EnemyShip {
 public:
     LineEnemy(Texture& t, int* sc_counter, vector<int>* en_slots, int idx, vector<EnemyShip>* group, int r);
-    void update(vector<Bullet>& g);
+    void update(vector<Bullet>& enemy_bullet_group, vector<Bullet>& ally_bullet_group, vector<int>& slots);
 private:
     int r;
     int x0, y0;
@@ -37,7 +37,7 @@ private:
 class CircleEnemy : public EnemyShip {
 public:
     CircleEnemy(Texture& t, int* sc_counter, vector<int>* en_slots, int idx, vector<EnemyShip>* group, int r);
-    void update(vector<Bullet>& g);
+    void update(vector<Bullet>& enemy_bullet_group, vector<Bullet>& ally_bullet_group, vector<int>& slots);
 private:
     int r;
     int x0, y0;
@@ -45,5 +45,3 @@ private:
 };
 
 // LineEnemy и CircleEnemy почему-то не работают....
-
-void update(vector<EnemyShip>& group, vector<Bullet>& bullet_group, vector<int>& slots);

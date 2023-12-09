@@ -17,8 +17,7 @@ EnemyShip::EnemyShip(Texture& t, int* sc_counter, vector<int>* en_slots, int idx
 void EnemyShip::shoot(vector<Bullet>& group, vector<int>& slots, int damage) {
     shootingTimer++; // таймер пальбы
     if (shootingTimer == INTENSITY) {
-        Bullet(getPosition(), &group, &slots, BULLET_SPEED, 0, damage, Color::Red, "ubivec");
-        //Bullet(getPosition(), &group, &slots, BULLET_SPEED / 3, 0, -2, Color::Magenta, "hitler");
+        Bullet(getPosition(), &group, &slots, BULLET_SPEED, BULLET_DAMAGE, damage, Color::Red, "ubivec");
         shootingTimer = 0;
     }
 }
@@ -38,14 +37,17 @@ void EnemyShip::move() {
     setPosition(getPosition().x + vx, getPosition().y + vy);;
 }
 
-void EnemyShip::destroy(vector<Bullet>& g, vector<int>& slots) {
+void EnemyShip::destroy(vector<Bullet>& enemy_bullet_group, vector<int>& slots) {
     int type_of_death = rand() % 8;
-    if(type_of_death == 3)
-        Bullet(getPosition(), &g, &slots, BULLET_SPEED/3, 0, -2, Color::Magenta, "hitler");
-    if (type_of_death == 4)
-        Bullet(getPosition(), &g, &slots, BULLET_SPEED / 3, 0, -2, Color::Cyan, "duble");
-    if (type_of_death == 5)
-        Bullet(getPosition(), &g, &slots, BULLET_SPEED / 3, 0, -2, Color::Yellow, "shit");
+    if (type_of_death == 3) {
+        Bullet(getPosition(), &enemy_bullet_group, &slots, FALL_SPEED, 0, -HEALING, Color::Magenta, "hitler");
+    }
+    if (type_of_death == 4) {
+        Bullet(getPosition(), &enemy_bullet_group, &slots, FALL_SPEED, 0, 0, Color::Cyan, "duble");
+    }
+    if (type_of_death == 5) {
+        Bullet(getPosition(), &enemy_bullet_group, &slots, FALL_SPEED, 0, 0, Color::Yellow, "shit");
+    }
 
     for (int i = 0; i < MAX_ENEMIES; i++) {
         if (index == (*group)[i].index) {
@@ -53,18 +55,24 @@ void EnemyShip::destroy(vector<Bullet>& g, vector<int>& slots) {
             group->erase(group->begin() + i);
             break;
         }
-    }
+    }//удаляем из массива врагов
 }
 
-void EnemyShip::update(vector<Bullet>& g, vector<int>& slots) {
+void EnemyShip::update(vector<Bullet>& enemy_bullet_group, vector<Bullet>& ally_bullet_group, vector<int>& slots) {
     // обновление состояния
     move();
-    for (auto& bul : g) {
+    for (auto& bul : ally_bullet_group) {
         hit(bul);
     }
     if (lives <= 0) {
-        destroy(g, slots);
+        destroy(enemy_bullet_group, slots);
         (*score_counter)++;
+    }
+}
+
+void update(vector<EnemyShip>& group, vector<Bullet>& enemy_bullet_group, vector<Bullet>& ally_bullet_group, vector<int>& slots) {
+    for (auto& enem : group) {
+        enem.update(enemy_bullet_group, ally_bullet_group, slots);
     }
 }
 
@@ -78,19 +86,21 @@ void EnemyShip::update(vector<Bullet>& g, vector<int>& slots) {
     group->push_back(*this);
 };
 
-void LineEnemy::update(vector<Bullet>& g) {
+void LineEnemy::update(vector<Bullet>& enemy_bullet_group, vector<Bullet>& ally_bullet_group, vector<int>& slots) {
+    // обновление состояния
     move();
-    for (auto& bul : g) {
+    for (auto& bul : ally_bullet_group) {
         hit(bul);
     }
     if (lives <= 0) {
-        destroy();
+        destroy(enemy_bullet_group, slots);
         (*score_counter)++;
     }
     if (getPosition().y < y0 - r || getPosition().y > y0 + r) {
         vx *= -1; vy *= -1;
     }
 }
+
 
 CircleEnemy::CircleEnemy(Texture& t, int* sc_counter, vector<int>* en_slots, int idx, vector<EnemyShip>* group, int r)
     : EnemyShip(t, sc_counter, en_slots, idx, group), r(r), phi(0) {
@@ -102,22 +112,22 @@ CircleEnemy::CircleEnemy(Texture& t, int* sc_counter, vector<int>* en_slots, int
     group->push_back(*this);
 };
 
-void CircleEnemy::update(vector<Bullet>& g) {
+void CircleEnemy::update(vector<Bullet>& enemy_bullet_group, vector<Bullet>& ally_bullet_group, vector<int>& slots) {
+    // обновление состояния
     move();
-    for (auto& bul : g) {
+    for (auto& bul : ally_bullet_group) {
         hit(bul);
     }
     if (lives <= 0) {
-        destroy();
+        destroy(enemy_bullet_group, slots);
         (*score_counter)++;
+    }
+    if (getPosition().y < y0 - r || getPosition().y > y0 + r) {
+        vx *= -1; vy *= -1;
     }
     phi += 0.1;
     vx = ENEMY_SPEED * cos(phi);
     vy = ENEMY_SPEED * sin(phi);
-}*/
-
-void update(vector<EnemyShip>& group, vector<Bullet>& bullet_group, vector<int>& slots) {
-    for (auto& enem : group) {
-        enem.update(bullet_group, slots);
-    }
 }
+*/
+

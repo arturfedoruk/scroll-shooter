@@ -103,7 +103,7 @@ int main() {
 
         player.move(PLAYER_SPEED * (KeysDown["D"] - KeysDown["A"]), PLAYER_SPEED * (KeysDown["S"] - KeysDown["W"]));
         // на основе ввода пользователя перемещаем игрока
-        player.update2(AsteroidGroup);
+        player.update(AsteroidGroup);
         player.update(EnemyBulletGroup);
         bar.setString("Lives: " + to_string(player.lives) + "\nScore: " + to_string(score));
         if (player.lives <= 0) {
@@ -116,7 +116,7 @@ int main() {
             player.shoot(AllyBulletGroup, bullets_slots, BULLET_DAMAGE);
         } // если пробел, то стреляем
 
-        update(EnemyShipGroup, AllyBulletGroup, bullets_slots);
+        update(EnemyShipGroup, EnemyBulletGroup, AllyBulletGroup, bullets_slots);
         update(AsteroidGroup);
         update(AllyBulletGroup); update(EnemyBulletGroup);
         // обносление состояния пулек и врагов
@@ -135,12 +135,11 @@ int main() {
                     }
                     else {
                         EnemyShip(enemy_ship_img, &score, &enemies_slots, i, &EnemyShipGroup);
-                    } случайно выбираем тип заспавненного врага */
-
+                    } //случайно выбираем тип заспавненного врага 
+                    */
                     EnemyShip(enemy_ship_img, &score, &enemies_slots, i, &EnemyShipGroup);
                     enemies_slots[i] = 1;
                
-
                     break; // занимаем свободный индекс
                 }
             }
