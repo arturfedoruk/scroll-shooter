@@ -10,10 +10,12 @@ public:
     void move(const Vector2f& offset);
     void move(float	offsetX, float offsetY);
     int lives = ALLY_LIVES;
+    int shield = 0;
+    int doubleshot = 0;
     void hit(Bullet bullet);
-    void hit2(Asteroid bullet);
+    void hit(Asteroid bullet);
     void update(vector<Bullet> group);
-    void update2(vector<Asteroid> group);
+    void update(vector<Asteroid> group);
 private:
     int shootingTimer = 0; // עאילונ סענוכüבû
     int hitbox_x = 56;

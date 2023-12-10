@@ -1,0 +1,15 @@
+CC=g++
+CFLAGS=-c -Wall
+LDFLAGS=
+SOURCES=main.cpp Bullet.cpp AllyShip.cpp EnemyShip.cpp Asteroid.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=scroll_shooter
+
+all: $(SOURCES) $(EXECUTABLE)
+	
+$(EXECUTABLE): $(OBJECTS) 
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+.cpp.o:
+	$(CC) $(CFLAGS) $< -o $@
+

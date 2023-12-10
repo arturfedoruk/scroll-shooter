@@ -1,7 +1,7 @@
 #include "Bullet.h"
 
-Bullet::Bullet(Vector2f position, vector<Bullet>* group, vector<int>* slts, float vy, float vx, int damage, Color color)
-    : CircleShape(5), group(group), slots(slts), vy(vy), vx(vx), damage(damage) {
+Bullet::Bullet(Vector2f position, vector<Bullet>* group, vector<int>* slts, float vy, float vx, int damage, Color color, string type)
+    : CircleShape(5), group(group), slots(slts), vy(vy), vx(vx), damage(damage), type(type) {
     setPosition(position); setFillColor(color); 
     group->push_back(*this);
     for (int i = 0; i < 400; i++) {

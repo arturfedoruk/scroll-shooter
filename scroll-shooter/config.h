@@ -16,7 +16,7 @@ using namespace std;
 #define PLAYER_SPEED 10
 #define ENEMY_SPEED 5
 
-#define ALLY_LIVES 5
+#define ALLY_LIVES 100
 #define ENEMY_LIVES 2
 
 #define PLAYER_INTENSITY 15
@@ -24,7 +24,9 @@ using namespace std;
 
 #define BULLET_DAMAGE 1
 #define BULLET_SPEED 20
+#define FALL_SPEED 7
 #define ASTERSPEED 7
+#define HEALING 2
 
 #define SPAWN_TIME 120 // число тиков между спавна следующего противника
 #define MAX_ENEMIES 5
