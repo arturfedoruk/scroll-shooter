@@ -1,5 +1,5 @@
 #include "EnemyShip.h"
-
+#include <cmath>
 
 EnemyShip::EnemyShip(Texture& t, int* sc_counter, vector<int>* en_slots, int idx, vector<EnemyShip>* group)
     : Sprite(t), score_counter(sc_counter), enemies_slots(en_slots), index(idx), group(group) {
